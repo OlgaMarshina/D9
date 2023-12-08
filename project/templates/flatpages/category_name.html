@@ -1,0 +1,56 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+
+{% block title %}
+news
+{% endblock title %}
+
+{% block content %}
+    <h3>{{ time_now|date:'d M Y' }}</h3>
+    <h1>Все категории</h1>
+    {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+
+
+
+    {% if category_name %}
+
+       <table>
+           <tr>
+
+               <td> Категории</td>
+               <td>Ваши подписки</td>
+
+           </tr>
+
+
+           {% for cat in category_name %}
+           <tr>
+
+
+               <td>&emsp;
+                    <a href="{% url 'category_list' cat.id  %}">{{ cat.name }}</a>
+               </td>
+               <td>
+                   {% if request.user in cat.subscribers.all %}
+                   <a href="{% url 'unsubscribe' cat.id  %}">отменить подписку</a>
+                   {% else %}
+                   <a href="{% url 'subscribe' cat.id  %}">подписаться</a>
+                   {% endif %}
+               </td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+
+    {% else %}
+
+       <h2>Новостей нет!</h2>
+
+    {% endif %}
+
+    <button> <a href="/news/"> Главная </a></button>
+
+{% endblock content %}

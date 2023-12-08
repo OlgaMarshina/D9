@@ -1,0 +1,56 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+
+{% block title %}
+news
+{% endblock title %}
+
+{% block content %}
+    <h3>{{ time_now|date:'d M Y' }}</h3>
+    <h1>Новость</h1>
+    {% if news_id %}
+       <table>
+           <tr>
+               <td>Заголовок</td>
+               <td>Категории</td>
+               <td>Дата публикации</td>
+               <td>Текст</td>
+               <td>Тип поста</td>
+               <td>ID поста </td>
+               <td>Автор</td>
+           </tr>
+
+
+
+           <tr>
+
+
+
+               <td>{{ news_id.title|censor }}&emsp;</td>
+
+               <td>
+                   {% for category in news_id.categories.all %}
+                       <a href="{% url 'category_list' category.id %}">{{category}}</a>
+                   {% endfor %}
+               </td>
+
+               <td>{{ news_id.date_create|date:'d M Y, H m'|censor}}&emsp;</td>
+               <td>{{ news_id.content }}&emsp;</td>
+               <td>{{ news_id.post_type }}&emsp;</td>
+               <td>{{news_id.id}}</td>
+               <td>{{ news_id.author }}&emsp;</td>
+
+
+           </tr>
+
+       </table>
+    {% else %}
+
+       <h2>Новостей нет!</h2>
+    {% endif %}
+<button> <a href="{% url 'news_edit' news_id.id %}"> Изменить новость/статью </a> </button>
+<button> <a href="{% url 'news_delete' news_id.id %}"> Удалить новость/статью </a> </button>
+<button> <a href="/news/"> Главная </a></button>
+
+{% endblock content %}
